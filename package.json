@@ -1,0 +1,19 @@
+{
+    "name": "gbf-data-searcher",
+    "version": "0.0.0",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview --port 4173",
+        "format": "prettier --write \"src/**/*.js\" \"src/**/*.vue\" \"src/**/*.css\""
+    },
+    "dependencies": {
+        "pinia": "^2.0.14",
+        "vue": "^3.2.37"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^2.3.3",
+        "prettier": "^2.5.1",
+        "vite": "^2.9.12"
+    }
+}
