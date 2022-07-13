@@ -40,6 +40,14 @@ export default defineConfig({
     build: {
         rollupOptions: {
             external: ['huijiwiki.css'],
+            output: {
+                entryFileNames: 'assets/[name].js',
+                assetFileNames: (assetInfo) => {
+                    const nameArray = assetInfo.name.split('/');
+                    return 'assets/' + nameArray[nameArray.length - 1];
+                },
+            },
         },
+        emptyOutDir: true,
     },
 });
