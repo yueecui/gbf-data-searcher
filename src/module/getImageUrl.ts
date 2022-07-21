@@ -3,31 +3,32 @@
  * @param {string} filename 上传的文件名，需要包括后缀
  * @returns {string} wiki图片的上传地址
  */
-export function getImageUrl(filename) {
-    let mw = window.mw;
+
+export function getImageUrl(filename: string) {
     filename = filename[0].toUpperCase() + filename.slice(1);
     const hex = md5(filename);
-    if (typeof mw == 'undefined') {
-        return ['/gbf/uploads', hex[0], hex[0] + hex[1], filename].join('/');
-    } else {
+    if (window.mw) {
         return [
             'https://huiji-public.huijistatic.com',
-            mw.config.get('wgHuijiPrefix'),
+            window.mw.config.get('wgHuijiPrefix'),
             'uploads',
             hex[0],
             hex[0] + hex[1],
             filename,
         ].join('/');
+    } else {
+        return ['/gbf/uploads', hex[0], hex[0] + hex[1], filename].join('/');
     }
 }
 
+/* eslint-disable */
 // Taken from https://github.com/killmenot/webtoolkit.md5
-let md5 = (string) => {
-    function RotateLeft(lValue, iShiftBits) {
+let md5 = (string: string) => {
+    function RotateLeft(lValue: any, iShiftBits: any) {
         return (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits));
     }
 
-    function AddUnsigned(lX, lY) {
+    function AddUnsigned(lX: any, lY: any) {
         var lX4, lY4, lX8, lY8, lResult;
         lX8 = lX & 0x80000000;
         lY8 = lY & 0x80000000;
@@ -48,43 +49,43 @@ let md5 = (string) => {
         }
     }
 
-    function F(x, y, z) {
+    function F(x: any, y: any, z: any) {
         return (x & y) | (~x & z);
     }
 
-    function G(x, y, z) {
+    function G(x: any, y: any, z: any) {
         return (x & z) | (y & ~z);
     }
 
-    function H(x, y, z) {
+    function H(x: any, y: any, z: any) {
         return x ^ y ^ z;
     }
 
-    function I(x, y, z) {
+    function I(x: any, y: any, z: any) {
         return y ^ (x | ~z);
     }
 
-    function FF(a, b, c, d, x, s, ac) {
+    function FF(a: any, b: any, c: any, d: any, x: any, s: any, ac: any) {
         a = AddUnsigned(a, AddUnsigned(AddUnsigned(F(b, c, d), x), ac));
         return AddUnsigned(RotateLeft(a, s), b);
     }
 
-    function GG(a, b, c, d, x, s, ac) {
+    function GG(a: any, b: any, c: any, d: any, x: any, s: any, ac: any) {
         a = AddUnsigned(a, AddUnsigned(AddUnsigned(G(b, c, d), x), ac));
         return AddUnsigned(RotateLeft(a, s), b);
     }
 
-    function HH(a, b, c, d, x, s, ac) {
+    function HH(a: any, b: any, c: any, d: any, x: any, s: any, ac: any) {
         a = AddUnsigned(a, AddUnsigned(AddUnsigned(H(b, c, d), x), ac));
         return AddUnsigned(RotateLeft(a, s), b);
     }
 
-    function II(a, b, c, d, x, s, ac) {
+    function II(a: any, b: any, c: any, d: any, x: any, s: any, ac: any) {
         a = AddUnsigned(a, AddUnsigned(AddUnsigned(I(b, c, d), x), ac));
         return AddUnsigned(RotateLeft(a, s), b);
     }
 
-    function ConvertToWordArray(string) {
+    function ConvertToWordArray(string: string) {
         var lWordCount;
         var lMessageLength = string.length;
         var lNumberOfWords_temp1 = lMessageLength + 8;
@@ -107,7 +108,7 @@ let md5 = (string) => {
         return lWordArray;
     }
 
-    function WordToHex(lValue) {
+    function WordToHex(lValue: any) {
         var WordToHexValue = '',
             WordToHexValue_temp = '',
             lByte,
@@ -120,7 +121,7 @@ let md5 = (string) => {
         return WordToHexValue;
     }
 
-    function Utf8Encode(string) {
+    function Utf8Encode(string: string) {
         string = string.replace(/\r\n/g, '\n');
         var utftext = '';
 

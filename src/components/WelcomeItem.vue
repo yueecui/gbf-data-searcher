@@ -13,7 +13,7 @@
 </template>
 
 <style scoped>
-/* .item {
+.item {
     margin-top: 2rem;
     display: flex;
 }
@@ -82,5 +82,5 @@ h3 {
     .item:last-of-type:after {
         display: none;
     }
-} */
+}
 </style>

@@ -1,17 +1,3 @@
-<script setup>
-import { computed } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
-import TheWelcome from './components/TheWelcome.vue';
-import { getImageUrl } from './module/getImageUrl';
-import { getGbfData } from './module/getData';
-
-const gameData = getGbfData();
-
-const name = computed(() => {
-    return gameData[0].n;
-});
-</script>
-
 <template>
     <header>
         <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
@@ -27,7 +13,7 @@ const name = computed(() => {
 
     <div>
         <h3> wiki资源使用 </h3>
-        <table class="wikitable">
+        <table class="wikitable test">
             <tr>
                 <th> 类型 </th>
                 <th> 描述 </th>
@@ -44,9 +30,27 @@ const name = computed(() => {
     </div>
 </template>
 
-<style>
-/* @import './assets/base.css';
+<script setup lang="ts">
+import { computed } from 'vue';
+import HelloWorld from './components/HelloWorld.vue';
+import TheWelcome from './components/TheWelcome.vue';
+import { getGbfData } from './module/getData';
+import { getImageUrl } from './module/getImageUrl';
 
+const gameData = getGbfData();
+
+const name = computed(() => {
+    return gameData[0].n;
+});
+</script>
+
+<style lang="less">
+// @import '/common';
+.test {
+    background: url('@{ImageUrl}/gbf/uploads/3/34/M_1040913900.jpg');
+}
+
+/*
 #app {
     max-width: 1280px;
     margin: 0 auto;

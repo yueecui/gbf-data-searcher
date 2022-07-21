@@ -8,10 +8,10 @@ let dataCache;
  */
 export function getGbfData() {
     if (!dataCache) {
-        if (typeof mw == 'undefined') {
-            dataCache = luaTableToArray(window.DATA.weapon);
+        if (window.mw) {
+            dataCache = luaTableToArray(window.mw.config.get('wgHuijiVars.GBFDATA').weapon);
         } else {
-            dataCache = luaTableToArray(mw.config.get('wgHuijiVars.GBFDATA').weapon);
+            dataCache = luaTableToArray(window.DATA!.weapon);
         }
     }
     return dataCache;
