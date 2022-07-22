@@ -8,8 +8,8 @@
     >
         <n-theme-editor>
             <searcher-filter />
-            <search-result :showData="showData" :page="page" :totalPage="totalPage" />
-            <n-pagination v-model:page="page" :page-count="totalPage" class="justify-center m-8" />
+            <search-result :showData="showData" :page="page" :total="total" :totalPage="totalPage" />
+            <n-pagination v-model:page="page" :page-count="totalPage" class="justify-center" />
         </n-theme-editor>
     </n-config-provider>
 </template>
@@ -20,39 +20,51 @@ import { computed, provide, reactive, ref } from 'vue';
 import ThemeOverrides from './assets/naive-ui-theme-overrides.json';
 import SearcherFilter from './components/SearcherFilter.vue';
 import SearchResult from './components/SearchResult.vue';
-import { getGbfData } from './module/getData';
+import { getWeaponData } from './module/getData';
 import type { FilterConfig } from './types/filter';
+
+const allWeaponData = getWeaponData();
+
+console.log();
 
 const filterConfig = reactive<FilterConfig>({
     name: '',
     element: 0,
     rarity: 0,
     weaponType: 0,
+    weaponCategory: 0,
+    skillCategory: 0,
 });
 provide('filterConfig', filterConfig);
 
-const allData = getGbfData();
-console.log(allData);
-
 const filteredData = computed(() => {
-    const { element, rarity, weaponType } = filterConfig;
-    const filtered = allData.weapon.filter((weapon) => {
+    const filtered = allWeaponData.filter((weapon) => {
         if (!weapon.findKeyword(filterConfig.name)) {
             return false;
         }
-        if (!weapon.isElement(element)) {
+        if (!weapon.isElement(filterConfig.element)) {
             return false;
         }
-        if (!weapon.isRarity(rarity)) {
+        if (!weapon.isRarity(filterConfig.rarity)) {
             return false;
         }
-        if (!weapon.isType(weaponType)) {
+        if (!weapon.isType(filterConfig.weaponType)) {
+            return false;
+        }
+        if (!weapon.isCategory(filterConfig.weaponCategory)) {
+            return false;
+        }
+        if (!weapon.hasSkill(filterConfig.skillCategory)) {
             return false;
         }
         return true;
     });
     return filtered;
 });
+
+// ====================================================================================
+// STATUS
+// ====================================================================================
 const page = ref<number>(1);
 const pageSize = ref<number>(40);
 const total = computed(() => filteredData.value.length);

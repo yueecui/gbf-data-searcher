@@ -41,4 +41,14 @@ export class Weapon {
         if (weaponType === 0) return true;
         return this.raw.k === weaponType;
     }
+
+    isCategory(category: number): boolean {
+        if (category === 0) return true;
+        return this.raw.c.includes(category);
+    }
+
+    hasSkill(skillCategory: number): boolean {
+        if (skillCategory === 0) return true;
+        return this.raw.sk.findIndex((sk) => sk.c === skillCategory) !== -1;
+    }
 }

@@ -1,6 +1,6 @@
 <template>
-    <div class="search-result-list">
-        <div class="text-with-shadow absolute top-[12px] left-[18px] leading-none">符合条件的武器数: 2433个</div>
+    <div class="search-result-list m-8">
+        <div class="text-with-shadow absolute top-[12px] left-[18px] leading-none">符合条件的武器数: {{ total }}个</div>
         <div class="grid grid-cols-10">
             <weapon-item v-for="data in showData" :key="data.id" :data="data" />
         </div>
@@ -16,13 +16,14 @@ import WeaponItem from './WeaponItem.vue';
 defineProps<{
     showData: any[];
     page: number;
+    total: number;
     totalPage: number;
 }>();
 </script>
 
 <style lang="less">
 .search-result-list {
-    @apply mx-auto my-0 relative z-10 before:inset-0 before:absolute before:z-[-1];
+    @apply mx-auto my-8 relative z-10 before:inset-0 before:absolute before:z-[-1];
     padding: 45px 20px 40px;
     min-height: 170px;
 

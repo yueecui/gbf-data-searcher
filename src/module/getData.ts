@@ -10,9 +10,7 @@ import type {
 } from '../types/gbfdata';
 import { convertLuaTable } from './convertLuaTable';
 
-let dataCache: {
-    [key: string]: any;
-};
+let dataCache: any;
 
 /**
  * 获取写在页面中的数据
@@ -36,18 +34,92 @@ interface GbfData {
     skillSortConfig: SkillSortConfig;
     skillTagSortConfig: SkillTagSortConfig;
     skillTypeIdMap: SkillTypeIdMap;
-    weapon: Weapon[];
+    weapon: WeaponRaw[];
     weaponFilterConfig: WeaponFilterConfig;
     weaponTagIdMap: WeaponTagIdMap;
 }
 
 /**
- * 获取GBF数据
+ * 获取所有lua写到页面的数据
  */
-export function getGbfData(): GbfData {
-    const data = getData('GBFDATA');
+export function getGbfData() {
+    return getData('GBFDATA') as GbfData;
+}
 
-    data.weapon = data.weapon.map((weapon: WeaponRaw) => new Weapon(weapon));
+/**
+ * 获取武器数据
+ */
+export function getWeaponData() {
+    const data = getGbfData();
 
-    return data as GbfData;
+    const weaponData = data.weapon.map((weapon) => new Weapon(weapon));
+
+    return weaponData;
+}
+
+/**
+ * 获取武器分类过滤器
+ */
+export function getWeaponFilterConfig() {
+    const data = getGbfData();
+    return generateWeaponFilter(data.weaponFilterConfig);
+}
+
+/**
+ * 查询武器类型名称
+ */
+export function getWeaponTypeName(weaponTypeId: number) {
+    if (weaponTypeId === 0) {
+        return '全部';
+    }
+
+    const data = getGbfData();
+    for (const [k, v] of Object.entries(data.weaponTagIdMap)) {
+        if (v.i === weaponTypeId) {
+            return k;
+        }
+    }
+}
+
+interface WeaponOptionItem {
+    label: string;
+    key: number | string;
+    children?: WeaponOptionItem[];
+    disabled?: boolean;
+}
+
+/** 递归生成武器分类过滤器选项 */
+function generateWeaponFilter(filter: WeaponFilterConfig) {
+    const result = [] as WeaponOptionItem[];
+    for (const item of filter) {
+        if (typeof item === 'number') {
+            const name = getWeaponTypeName(item);
+            if (name) {
+                result.push({
+                    label: name,
+                    key: item,
+                });
+            }
+        } else {
+            result.push({
+                label: item.name,
+                key: item.name,
+                children: generateWeaponFilter(item.children),
+            });
+        }
+    }
+    return result;
+}
+
+/** 生成技能加成类型过滤器 */
+export function generateSkillCategoryFilter() {
+    const { skillCategoryMap } = getGbfData();
+    const categoryArray = Object.keys(skillCategoryMap).map((key) => {
+        return {
+            label: key === '' ? '无' : key,
+            key: skillCategoryMap[key],
+        };
+    });
+    categoryArray.sort((a, b) => a.key - b.key);
+    return categoryArray;
 }

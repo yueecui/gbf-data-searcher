@@ -43,18 +43,31 @@ export interface WeaponRaw {
     v: [number, number, 1 | 0];
     /** 最后更新的时间戳 */
     l: number;
-    /** 技能类型id标签 */
-    sk: number[];
+    /** 技能 */
+    sk: {
+        /** type id */
+        t: number;
+        /** category id */
+        c: number;
+        /** skill name */
+        n: string;
+    }[];
 }
 
 /** 武器过滤器配置 */
 export type WeaponFilterConfig = (
     | {
           name: string;
-          children: WeaponFilterConfig[];
+          children: WeaponFilterConfig;
       }
-    | string
+    | number
 )[];
 
 /** 武器标签Id MAP */
-export type WeaponTagIdMap = Record<string, number>;
+export type WeaponTagIdMap = Record<
+    string,
+    {
+        i: number;
+        o?: string;
+    }
+>;

@@ -5,4 +5,6 @@ export interface FilterConfig {
     element: ElementType;
     rarity: RarityType;
     weaponType: WeaponType;
+    weaponCategory: number;
+    skillCategory: number;
 }
