@@ -20,7 +20,7 @@ import { computed, provide, reactive, ref } from 'vue';
 import ThemeOverrides from './assets/naive-ui-theme-overrides.json';
 import SearcherFilter from './components/SearcherFilter.vue';
 import SearchResult from './components/SearchResult.vue';
-import { GameDataType, getGbfData } from './module/getData';
+import { getGbfData } from './module/getData';
 import type { FilterConfig } from './types/filter';
 
 const filterConfig = reactive<FilterConfig>({
@@ -31,19 +31,22 @@ const filterConfig = reactive<FilterConfig>({
 });
 provide('filterConfig', filterConfig);
 
-const allData = getGbfData(GameDataType.Weapon);
+const allData = getGbfData();
 console.log(allData);
 
 const filteredData = computed(() => {
     const { element, rarity, weaponType } = filterConfig;
-    const filtered = allData.filter((data) => {
-        if (element && data.e !== element) {
+    const filtered = allData.weapon.filter((weapon) => {
+        if (!weapon.findKeyword(filterConfig.name)) {
             return false;
         }
-        if (rarity && data.s !== rarity) {
+        if (!weapon.isElement(element)) {
             return false;
         }
-        if (weaponType && data.k !== weaponType) {
+        if (!weapon.isRarity(rarity)) {
+            return false;
+        }
+        if (!weapon.isType(weaponType)) {
             return false;
         }
         return true;

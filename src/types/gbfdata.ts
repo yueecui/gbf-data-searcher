@@ -1,6 +1,21 @@
+// 通过页面传来的数据的类型
+
 import type { ElementType, RarityType, WeaponType } from '../enums/constant';
 
-export interface Weapon {
+/** 技能分类（普通/方阵/EX等） */
+export type SkillCatrgoryMap = Record<string, number>;
+
+/** 技能类型（攻刃、神威）的排列顺序 */
+export type SkillSortConfig = string[];
+
+/** 技能标签（ATK/HP）的排列顺序 */
+export type SkillTagSortConfig = string[];
+
+/** 技能类型的ID对照表 */
+export type SkillTypeIdMap = Record<string, number>;
+
+/** 武器原始数据 */
+export interface WeaponRaw {
     id: string;
     /** 索引 */
     i: number;
@@ -31,3 +46,15 @@ export interface Weapon {
     /** 技能类型id标签 */
     sk: number[];
 }
+
+/** 武器过滤器配置 */
+export type WeaponFilterConfig = (
+    | {
+          name: string;
+          children: WeaponFilterConfig[];
+      }
+    | string
+)[];
+
+/** 武器标签Id MAP */
+export type WeaponTagIdMap = Record<string, number>;
