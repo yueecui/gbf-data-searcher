@@ -63,3 +63,33 @@ export const WeaponTypeNameMap: Record<WeaponType, string> = {
     [WeaponType.KATANA]: '刀',
     [WeaponType.MATERIAL]: '素材',
 };
+
+export enum UncapType {
+    ALL = 0,
+    THREE = 1,
+    FOUR_PLUS = 2,
+    FOUR = 3,
+    FIVE = 4,
+}
+
+export const UncapTypeNameMap: Record<UncapType, string> = {
+    [UncapType.ALL]: '全部',
+    [UncapType.THREE]: '★★★',
+    [UncapType.FOUR_PLUS]: '★★★★～',
+    [UncapType.FOUR]: '★★★★',
+    [UncapType.FIVE]: '★★★★★',
+};
+
+export enum SortType {
+    RELEASE_DATE_DESC = 0,
+    UPDATE_DATA_DESC = 1,
+    ELEMENT = 2,
+    TYPE = 3,
+}
+
+export const SortTypeNameMap: Record<SortType, string> = {
+    [SortType.RELEASE_DATE_DESC]: '最新登场',
+    [SortType.UPDATE_DATA_DESC]: '最近更新',
+    [SortType.ELEMENT]: '属性',
+    [SortType.TYPE]: '类型',
+};

@@ -1,6 +1,13 @@
 {
     "name": "gbf-data-searcher",
-    "version": "0.0.1",
+    "displayName": "GBF Data Searcher V2",
+    "version": "0.1.1",
+    "author": "Yuee",
+    "description": "A tool to search GBF data",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/yueecui/gbf-data-searcher/"
+    },
     "license": "MIT",
     "scripts": {
         "dev": "vite",

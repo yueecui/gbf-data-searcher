@@ -1,13 +1,15 @@
 <template>
     <div class="item px-[3px] pt-[3px] pb-[6px]" :data-master-id="data.id">
-        <a :href="`/wiki/Weapon/${data.id}`" :title="data.nj" target="_blank">
+        <a :href="`/wiki/Weapon/${data.id}`" :title="data.name" target="_blank">
             <img :src="getImageUrl(`M_${data.id}.jpg`)" class="max-w-full" />
             <div
                 class="item-rarity flex justify-center items-center h-[26px] pt-[2px] mt-[-6px] relative before:z-[-1] before:inset-0 before:absolute"
             >
-                <div class="star-y"></div>
-                <div class="star-y"></div>
-                <div class="star-y"></div>
+                <div
+                    v-for="(color, index) in data.getStarConfig()"
+                    :key="index"
+                    :class="`star ${color} scale-[.7] 2xl:scale-[.8]`"
+                ></div>
             </div>
         </a>
     </div>
@@ -15,9 +17,10 @@
 
 <script setup lang="ts">
 import { getImageUrl } from '../module/getImageUrl';
+import type { Weapon } from '../objects/Weapon';
 
 defineProps<{
-    data: any;
+    data: Weapon;
 }>();
 </script>
 
@@ -39,21 +42,21 @@ defineProps<{
     }
 }
 
-.star-y {
+.star {
     display: inline-block;
-    background: url('@{ImageUrl}/gbf/uploads/1/11/Evolution-star-2.png') no-repeat 0 -685px;
+    background: url('@{ImageUrl}/gbf/uploads/1/11/Evolution-star-2.png') no-repeat;
     width: 20px;
     height: 20px;
-    transform: scale(0.7);
     margin: 0 -3px;
-}
 
-.star-b {
-    display: inline-block;
-    background: url('@{ImageUrl}/gbf/uploads/1/11/Evolution-star-2.png') no-repeat 0 -789px;
-    width: 20px;
-    height: 20px;
-    transform: scale(0.7);
-    margin: 0 -3px;
+    &.yellow {
+        background-position: 0 -685px;
+    }
+    &.blue {
+        background-position: 0 -789px;
+    }
+    &.red {
+        background-position: 0 -711px;
+    }
 }
 </style>

@@ -136,11 +136,17 @@ export function generateSkillTagFilter() {
     return tagArray;
 }
 
-/** 生成属性标签过滤器 */
+/** 生成技能类型标签过滤器 */
 export function generateSkillTypeFilter(tag: string) {
     const { skillSortConfig, skillTypeIdMap } = getGbfData();
     return skillSortConfig
-        .filter((tagName) => (tag === '' ? true : skillTypeIdMap[tagName].t.includes(tag)))
+        .filter((tagName) => {
+            if (skillTypeIdMap[tagName]) {
+                return tag === '' ? true : skillTypeIdMap[tagName].t.includes(tag);
+            } else {
+                console.error(`标签[${tagName}]不存在，请从数据中移除`);
+            }
+        })
         .map((tagName) => {
             return {
                 label: tagName,

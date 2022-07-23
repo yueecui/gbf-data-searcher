@@ -20,6 +20,11 @@
                         <n-button class="w-32">{{ WeaponTypeNameMap[filterConfig.weaponType] }}</n-button>
                     </n-dropdown>
                 </n-form-item>
+                <n-form-item label="上限解放">
+                    <n-dropdown trigger="click" :options="uncapOptions" @select="changeUncapType">
+                        <n-button class="w-32">{{ UncapTypeNameMap[filterConfig.uncap] }}</n-button>
+                    </n-dropdown>
+                </n-form-item>
                 <n-form-item label="武器分类">
                     <n-dropdown trigger="click" :options="weaponCategoryOptions" @select="changeWeaponCategory">
                         <n-button class="min-w-[15rem]">{{ getWeaponTypeName(filterConfig.weaponCategory) }}</n-button>
@@ -30,15 +35,25 @@
                         <template v-if="skillFilterShow"> 清空</template><template v-else> 展开</template>
                     </n-button>
                 </n-form-item>
+                <n-form-item label="排序">
+                    <n-dropdown trigger="click" :options="sortOptions" @select="changeSortType">
+                        <n-button class="w-32">{{ SortTypeNameMap[filterConfig.sort] }}</n-button>
+                    </n-dropdown>
+                </n-form-item>
+                <n-form-item>
+                    <n-button color="#961916" @click="resetAllFilter">
+                        <div class="flex items-center gap-4">
+                            <i class="fa fa-refresh"></i>
+                            <span>重置</span>
+                        </div>
+                    </n-button>
+                </n-form-item>
             </n-space>
             <weapon-skill-filter-collapse
                 :show="skillFilterShow"
                 :change-filter="changeSkillFilter"
                 :skill-filter="filterConfig.skillFilter"
             />
-            <n-space>
-                <n-button type="primary" @click="resetFilter">重置</n-button>
-            </n-space>
         </n-space>
     </n-form>
 </template>
@@ -46,14 +61,20 @@
 <script setup lang="ts">
 import { NButton, NDropdown, NForm, NFormItem, NInput, NSpace } from 'naive-ui';
 import { computed, inject, ref } from 'vue';
-import { ElementTypeNameMap, RarityTypeNameMap, WeaponTypeNameMap } from '../enums/constant';
+import {
+    ElementTypeNameMap,
+    RarityTypeNameMap,
+    SortTypeNameMap,
+    UncapTypeNameMap,
+    WeaponTypeNameMap,
+} from '../enums/constant';
 import { getWeaponFilterConfig, getWeaponTypeName } from '../module/getData';
 import type { FilterConfig } from '../types/filter';
 import WeaponSkillFilterCollapse from './WeaponSkillFilterCollapse.vue';
 
 const filterConfig = inject('filterConfig') as FilterConfig;
 
-defineProps<{
+const props = defineProps<{
     resetFilter: () => void;
 }>();
 
@@ -90,13 +111,35 @@ const weaponOptions = computed(() => [
     })),
 ]);
 
-// ====================================================================================
-// 分类过滤
-// ====================================================================================
-
 function changeWeaponType(key: number) {
     filterConfig.weaponType = key;
 }
+
+const uncapOptions = computed(() => [
+    ...Object.keys(UncapTypeNameMap).map((key) => ({
+        label: UncapTypeNameMap[key],
+        key: Number(key),
+    })),
+]);
+
+function changeUncapType(key: number) {
+    filterConfig.uncap = key;
+}
+
+const sortOptions = computed(() => [
+    ...Object.keys(SortTypeNameMap).map((key) => ({
+        label: SortTypeNameMap[key],
+        key: Number(key),
+    })),
+]);
+
+function changeSortType(key: number) {
+    filterConfig.sort = key;
+}
+
+// ====================================================================================
+// 分类过滤
+// ====================================================================================
 
 const weaponCategoryOptions = computed((): any => [
     {
@@ -133,6 +176,13 @@ function changeSkillFilter(key: keyof FilterConfig['skillFilter'], value: any) {
     if (key === 'tag') {
         filterConfig.skillFilter.skill = 0;
     }
+}
+// ====================================================================================
+// 重置
+// ====================================================================================
+function resetAllFilter() {
+    skillFilterShow.value = false;
+    props.resetFilter();
 }
 </script>
 <style lang="less">

@@ -1,5 +1,8 @@
 {
-    "Input": {
-        "boxShadowFocus": "none"
+    "common": {
+        "primaryColor": "#2080F0FF",
+        "primaryColorHover": "#4098FCFF",
+        "primaryColorPressed": "#1060C9FF",
+        "primaryColorSuppl": "#4098FCFF"
     }
 }
