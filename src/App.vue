@@ -7,9 +7,9 @@
         :date-locale="dateZhCN"
     >
         <n-theme-editor>
-            <searcher-filter />
-            <search-result :showData="showData" :page="page" :totalPage="totalPage" />
-            <n-pagination v-model:page="page" :page-count="totalPage" class="justify-center m-8" />
+            <searcher-filter :reset-filter="resetFilter" />
+            <search-result :showData="showData" :page="page" :total="total" :totalPage="totalPage" />
+            <n-pagination v-model:page="page" :page-count="totalPage" class="justify-center" />
         </n-theme-editor>
     </n-config-provider>
 </template>
@@ -20,36 +20,78 @@ import { computed, provide, reactive, ref } from 'vue';
 import ThemeOverrides from './assets/naive-ui-theme-overrides.json';
 import SearcherFilter from './components/SearcherFilter.vue';
 import SearchResult from './components/SearchResult.vue';
-import { GameDataType, getGbfData } from './module/getData';
+import { generateAvailableSkillTypeList, getWeaponData } from './module/getData';
 import type { FilterConfig } from './types/filter';
 
-const filterConfig = reactive<FilterConfig>({
+const allWeaponData = getWeaponData();
+
+console.log();
+
+const filterConfigDefault = {
     name: '',
     element: 0,
     rarity: 0,
     weaponType: 0,
-});
+    weaponCategory: 0,
+    skillFilter: {
+        category: 0,
+        tag: '',
+        skill: 0,
+    },
+};
+
+const filterConfig = reactive<FilterConfig>(JSON.parse(JSON.stringify(filterConfigDefault)));
 provide('filterConfig', filterConfig);
 
-const allData = getGbfData(GameDataType.Weapon);
-console.log(allData);
+function resetFilter() {
+    filterConfig.name = '';
+    filterConfig.element = 0;
+    filterConfig.rarity = 0;
+    filterConfig.weaponType = 0;
+    filterConfig.weaponCategory = 0;
+    filterConfig.skillFilter.category = 0;
+    filterConfig.skillFilter.tag = '';
+    filterConfig.skillFilter.skill = 0;
+}
 
 const filteredData = computed(() => {
-    const { element, rarity, weaponType } = filterConfig;
-    const filtered = allData.filter((data) => {
-        if (element && data.e !== element) {
+    const filtered = allWeaponData.filter((weapon) => {
+        if (!weapon.findKeyword(filterConfig.name)) {
             return false;
         }
-        if (rarity && data.s !== rarity) {
+        if (!weapon.isElement(filterConfig.element)) {
             return false;
         }
-        if (weaponType && data.k !== weaponType) {
+        if (!weapon.isRarity(filterConfig.rarity)) {
             return false;
+        }
+        if (!weapon.isType(filterConfig.weaponType)) {
+            return false;
+        }
+        if (!weapon.isCategory(filterConfig.weaponCategory)) {
+            return false;
+        }
+        if (!weapon.hasSkillCategory(filterConfig.skillFilter.category)) {
+            return false;
+        }
+        if (filterConfig.skillFilter.tag !== '' || filterConfig.skillFilter.skill !== 0) {
+            const availableSkill =
+                filterConfig.skillFilter.skill === 0
+                    ? generateAvailableSkillTypeList(filterConfig.skillFilter.tag)
+                    : [filterConfig.skillFilter.skill];
+            console.log(availableSkill);
+            if (!weapon.hasSkillType(availableSkill)) {
+                return false;
+            }
         }
         return true;
     });
     return filtered;
 });
+
+// ====================================================================================
+// STATUS
+// ====================================================================================
 const page = ref<number>(1);
 const pageSize = ref<number>(40);
 const total = computed(() => filteredData.value.length);

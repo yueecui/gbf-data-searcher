@@ -1,15 +1,5 @@
 {
-    "color": "rgba(31, 31, 31, 1)",
     "Input": {
-        "color": "rgba(31, 31, 31, 1)",
-        "colorFocus": "rgba(31, 31, 31, 1)",
-        "border": "1px #565656 solid",
-        "groupLabelColor": "rgb(250, 250, 252)",
-        "borderRadius": "1px",
-        "textColor": "rgba(245, 245, 245, 1)",
-        "caretColor": "rgba(245, 245, 245, 1)",
-        "placeholderColor": "rgba(117, 117, 117, 1)",
-        "borderFocus": "none",
         "boxShadowFocus": "none"
     }
 }

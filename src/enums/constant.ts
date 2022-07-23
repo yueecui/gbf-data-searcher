@@ -46,6 +46,7 @@ export enum WeaponType {
     BOW = 8,
     HARP = 9,
     KATANA = 10,
+    MATERIAL = 99,
 }
 
 export const WeaponTypeNameMap: Record<WeaponType, string> = {
@@ -60,4 +61,5 @@ export const WeaponTypeNameMap: Record<WeaponType, string> = {
     [WeaponType.BOW]: '弓',
     [WeaponType.HARP]: '乐器',
     [WeaponType.KATANA]: '刀',
+    [WeaponType.MATERIAL]: '素材',
 };
