@@ -14,16 +14,18 @@
 
 <script setup lang="ts">
 import { dateZhCN, NConfigProvider, NPagination, zhCN } from 'naive-ui';
-import { computed, provide, reactive, ref } from 'vue';
+import { computed, onMounted, provide, reactive, ref, watch } from 'vue';
 import ThemeOverrides from './assets/naive-ui-theme-overrides.json';
 import SearcherFilter from './components/SearcherFilter.vue';
 import SearchResult from './components/SearchResult.vue';
+import { screenMap, sizeEnum } from './enums/breakpointEnum';
 import { SortType } from './enums/constant';
 import { generateAvailableSkillTypeList, getWeaponData } from './module/getData';
 import type { FilterConfig } from './types/filter';
 
-const allWeaponData = getWeaponData();
-
+// ====================================================================================
+// FILTER
+// ====================================================================================
 const filterConfigDefault: FilterConfig = {
     name: '',
     element: 0,
@@ -41,13 +43,71 @@ const filterConfigDefault: FilterConfig = {
 
 const filterConfig = reactive<FilterConfig>(JSON.parse(JSON.stringify(filterConfigDefault)));
 provide('filterConfig', filterConfig);
+watch(filterConfig, () => {
+    page.value = 1;
+});
+
+// ====================================================================================
+// STATUS
+// ====================================================================================
+const page = ref<number>(1);
+const pageSize = ref<number>(50);
+watch(pageSize, () => {
+    page.value = 1;
+});
+const total = computed(() => filteredData.value.length);
+const totalPage = computed(() => Math.ceil(total.value / pageSize.value));
+const screenSize = ref<sizeEnum>();
+
+// ====================================================================================
+// METHOD
+// ====================================================================================
+onMounted(() => {
+    resizeFn();
+    window.addEventListener('resize', resizeFn);
+});
 
 function resetFilter() {
     const newConfig = JSON.parse(JSON.stringify(filterConfigDefault));
     for (const key in newConfig) {
         filterConfig[key] = newConfig[key];
     }
+    page.value = 1;
 }
+
+function resizeFn() {
+    const findScreebSize = () => {
+        const width = window.innerWidth;
+        for (const [key, value] of screenMap.entries()) {
+            if (width < value) {
+                return key;
+            }
+        }
+        return sizeEnum.XXXL;
+    };
+    screenSize.value = findScreebSize();
+
+    const getPageSize = () => {
+        switch (screenSize.value) {
+            case sizeEnum.SM:
+            case sizeEnum.MD:
+                return 20;
+            case sizeEnum.LG:
+                return 30;
+            case sizeEnum.XL:
+                return 40;
+            case sizeEnum.XXL:
+            default:
+                return 50;
+        }
+    };
+    pageSize.value = getPageSize();
+}
+
+// ====================================================================================
+// DATA
+// ====================================================================================
+const allWeaponData = getWeaponData();
 
 const filteredData = computed(() => {
     const filteredData = allWeaponData.filter((weapon) => {
@@ -121,15 +181,7 @@ const filteredData = computed(() => {
     });
     return filteredData;
 });
-
-// ====================================================================================
-// STATUS
-// ====================================================================================
-const page = ref<number>(1);
-const pageSize = ref<number>(50);
-const total = computed(() => filteredData.value.length);
-const totalPage = computed(() => Math.ceil(total.value / pageSize.value));
-
+/** 当前显示的数据 */
 const showData = computed(() => {
     return filteredData.value.slice((page.value - 1) * pageSize.value, page.value * pageSize.value);
 });

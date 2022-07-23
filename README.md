@@ -1,46 +1,22 @@
-# gbf-data-searcher
+## 线上地址
+[武器搜索器V2](https://gbf.huijiwiki.com/wiki/%E6%AD%A6%E5%99%A8%E6%90%9C%E7%B4%A2%E5%99%A8V2)
 
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
-
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
+用于过滤的数据，是通过Lua读取、整理后直接写入页面中的，开发环境中使用的是保存下来的静态版本。
+## IDE配置
+推荐使用[VSCode](https://code.visualstudio.com/)，安装以下2个扩展
+- [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+- [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin)
+- 如果以前安装过Vetur，请禁用掉
+## 安装和使用
+### 安装
 ```sh
-npm install
+yarn
 ```
-
-### Compile and Hot-Reload for Development
-
+### 开发环境
 ```sh
-npm run dev
+yarn dev
 ```
-
-### Type-Check, Compile and Minify for Production
-
+### 编译
 ```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
+yarn build
 ```

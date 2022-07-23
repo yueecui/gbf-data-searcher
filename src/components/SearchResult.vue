@@ -37,7 +37,8 @@ defineProps<{
 }
 @media (max-width: 767px) {
     .search-result-list {
-        margin: 0 -10px;
+        margin-left: -10px;
+        margin-right: -10px;
         padding-left: 10px;
         padding-right: 10px;
     }
