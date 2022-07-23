@@ -26,43 +26,40 @@
                     </n-dropdown>
                 </n-form-item>
                 <n-form-item label="武器技能">
-                    <n-button color="#31bbd7" :ghost="!skillFilterActive" @click="toggleSkillFilter">
-                        <template v-if="skillFilterActive"> 收起</template><template v-else> 展开</template>
+                    <n-button color="#31bbd7" :ghost="!skillFilterShow" @click="toggleSkillFilter">
+                        <template v-if="skillFilterShow"> 清空</template><template v-else> 展开</template>
                     </n-button>
                 </n-form-item>
             </n-space>
-            <n-collapse-transition :show="skillFilterActive">
-                <n-form-item label="加成类型">
-                    <n-space size="small">
-                        <n-button
-                            class="min-w-[4rem]"
-                            size="tiny"
-                            color="#31bbd7"
-                            :ghost="filterConfig.skillCategory !== category.key"
-                            v-for="category in skillCategoryOptions"
-                            :key="category.key"
-                            @click="changeSkillCategory(category.key)"
-                        >
-                            {{ category.label }}
-                        </n-button>
-                    </n-space>
-                </n-form-item>
-            </n-collapse-transition>
+            <weapon-skill-filter-collapse
+                :show="skillFilterShow"
+                :change-filter="changeSkillFilter"
+                :skill-filter="filterConfig.skillFilter"
+            />
             <n-space>
-                <n-button type="primary">重置</n-button>
+                <n-button type="primary" @click="resetFilter">重置</n-button>
             </n-space>
         </n-space>
     </n-form>
 </template>
 
 <script setup lang="ts">
-import { NButton, NCollapseTransition, NDropdown, NForm, NFormItem, NInput, NSpace } from 'naive-ui';
+import { NButton, NDropdown, NForm, NFormItem, NInput, NSpace } from 'naive-ui';
 import { computed, inject, ref } from 'vue';
 import { ElementTypeNameMap, RarityTypeNameMap, WeaponTypeNameMap } from '../enums/constant';
-import { generateSkillCategoryFilter, getWeaponFilterConfig, getWeaponTypeName } from '../module/getData';
+import { getWeaponFilterConfig, getWeaponTypeName } from '../module/getData';
 import type { FilterConfig } from '../types/filter';
+import WeaponSkillFilterCollapse from './WeaponSkillFilterCollapse.vue';
 
 const filterConfig = inject('filterConfig') as FilterConfig;
+
+defineProps<{
+    resetFilter: () => void;
+}>();
+
+// ====================================================================================
+// 基础过滤
+// ====================================================================================
 
 const elementOptions = computed(() => [
     ...Object.keys(ElementTypeNameMap).map((key) => ({
@@ -93,6 +90,10 @@ const weaponOptions = computed(() => [
     })),
 ]);
 
+// ====================================================================================
+// 分类过滤
+// ====================================================================================
+
 function changeWeaponType(key: number) {
     filterConfig.weaponType = key;
 }
@@ -113,21 +114,25 @@ function changeWeaponCategory(key: number) {
 // 技能过滤
 // ====================================================================================
 // 为了保证展开动画效果，隐藏和激活分成2个控制变量
-const skillFilterActive = ref(false);
+const skillFilterShow = ref(false);
 function toggleSkillFilter() {
-    skillFilterActive.value = !skillFilterActive.value;
+    skillFilterShow.value = !skillFilterShow.value;
+    // 关闭后清空过滤器
+    if (!skillFilterShow.value) {
+        filterConfig.skillFilter = {
+            category: 0,
+            tag: '',
+            skill: 0,
+        };
+    }
 }
 
-const skillCategoryOptions = computed(() => [
-    {
-        label: '全部',
-        key: 0,
-    },
-    ...generateSkillCategoryFilter(),
-]);
-
-function changeSkillCategory(key: number) {
-    filterConfig.skillCategory = key;
+function changeSkillFilter(key: keyof FilterConfig['skillFilter'], value: any) {
+    // 不是很懂这里为什么类型变成never了，只好any一下
+    (filterConfig.skillFilter as any)[key] = value;
+    if (key === 'tag') {
+        filterConfig.skillFilter.skill = 0;
+    }
 }
 </script>
 <style lang="less">

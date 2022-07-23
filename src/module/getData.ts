@@ -123,3 +123,36 @@ export function generateSkillCategoryFilter() {
     categoryArray.sort((a, b) => a.key - b.key);
     return categoryArray;
 }
+
+/** 生成属性标签过滤器 */
+export function generateSkillTagFilter() {
+    const { skillTagSortConfig } = getGbfData();
+    const tagArray = skillTagSortConfig.map((tagName) => {
+        return {
+            label: tagName,
+            key: tagName,
+        };
+    });
+    return tagArray;
+}
+
+/** 生成属性标签过滤器 */
+export function generateSkillTypeFilter(tag: string) {
+    const { skillSortConfig, skillTypeIdMap } = getGbfData();
+    return skillSortConfig
+        .filter((tagName) => (tag === '' ? true : skillTypeIdMap[tagName].t.includes(tag)))
+        .map((tagName) => {
+            return {
+                label: tagName,
+                key: skillTypeIdMap[tagName].i,
+            };
+        });
+}
+
+/** 生成属性标签过滤器 */
+export function generateAvailableSkillTypeList(tag: string) {
+    const { skillSortConfig, skillTypeIdMap } = getGbfData();
+    return skillSortConfig
+        .filter((tagName) => (tag === '' ? true : skillTypeIdMap[tagName].t.includes(tag)))
+        .map((tagName) => skillTypeIdMap[tagName].i);
+}

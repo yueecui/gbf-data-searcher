@@ -47,8 +47,12 @@ export class Weapon {
         return this.raw.c.includes(category);
     }
 
-    hasSkill(skillCategory: number): boolean {
+    hasSkillCategory(skillCategory: number): boolean {
         if (skillCategory === 0) return true;
         return this.raw.sk.findIndex((sk) => sk.c === skillCategory) !== -1;
+    }
+
+    hasSkillType(skillTypes: number[]): boolean {
+        return this.raw.sk.findIndex((sk) => skillTypes.includes(sk.t)) !== -1;
     }
 }

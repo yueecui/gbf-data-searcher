@@ -7,7 +7,7 @@
         :date-locale="dateZhCN"
     >
         <n-theme-editor>
-            <searcher-filter />
+            <searcher-filter :reset-filter="resetFilter" />
             <search-result :showData="showData" :page="page" :total="total" :totalPage="totalPage" />
             <n-pagination v-model:page="page" :page-count="totalPage" class="justify-center" />
         </n-theme-editor>
@@ -20,22 +20,39 @@ import { computed, provide, reactive, ref } from 'vue';
 import ThemeOverrides from './assets/naive-ui-theme-overrides.json';
 import SearcherFilter from './components/SearcherFilter.vue';
 import SearchResult from './components/SearchResult.vue';
-import { getWeaponData } from './module/getData';
+import { generateAvailableSkillTypeList, getWeaponData } from './module/getData';
 import type { FilterConfig } from './types/filter';
 
 const allWeaponData = getWeaponData();
 
 console.log();
 
-const filterConfig = reactive<FilterConfig>({
+const filterConfigDefault = {
     name: '',
     element: 0,
     rarity: 0,
     weaponType: 0,
     weaponCategory: 0,
-    skillCategory: 0,
-});
+    skillFilter: {
+        category: 0,
+        tag: '',
+        skill: 0,
+    },
+};
+
+const filterConfig = reactive<FilterConfig>(JSON.parse(JSON.stringify(filterConfigDefault)));
 provide('filterConfig', filterConfig);
+
+function resetFilter() {
+    filterConfig.name = '';
+    filterConfig.element = 0;
+    filterConfig.rarity = 0;
+    filterConfig.weaponType = 0;
+    filterConfig.weaponCategory = 0;
+    filterConfig.skillFilter.category = 0;
+    filterConfig.skillFilter.tag = '';
+    filterConfig.skillFilter.skill = 0;
+}
 
 const filteredData = computed(() => {
     const filtered = allWeaponData.filter((weapon) => {
@@ -54,8 +71,18 @@ const filteredData = computed(() => {
         if (!weapon.isCategory(filterConfig.weaponCategory)) {
             return false;
         }
-        if (!weapon.hasSkill(filterConfig.skillCategory)) {
+        if (!weapon.hasSkillCategory(filterConfig.skillFilter.category)) {
             return false;
+        }
+        if (filterConfig.skillFilter.tag !== '' || filterConfig.skillFilter.skill !== 0) {
+            const availableSkill =
+                filterConfig.skillFilter.skill === 0
+                    ? generateAvailableSkillTypeList(filterConfig.skillFilter.tag)
+                    : [filterConfig.skillFilter.skill];
+            console.log(availableSkill);
+            if (!weapon.hasSkillType(availableSkill)) {
+                return false;
+            }
         }
         return true;
     });

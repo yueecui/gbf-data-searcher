@@ -6,5 +6,9 @@ export interface FilterConfig {
     rarity: RarityType;
     weaponType: WeaponType;
     weaponCategory: number;
-    skillCategory: number;
+    skillFilter: {
+        category: number;
+        tag: string;
+        skill: number;
+    };
 }

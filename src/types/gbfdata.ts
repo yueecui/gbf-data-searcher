@@ -12,7 +12,13 @@ export type SkillSortConfig = string[];
 export type SkillTagSortConfig = string[];
 
 /** 技能类型的ID对照表 */
-export type SkillTypeIdMap = Record<string, number>;
+export type SkillTypeIdMap = Record<
+    string,
+    {
+        i: number;
+        t: string[];
+    }
+>;
 
 /** 武器原始数据 */
 export interface WeaponRaw {
