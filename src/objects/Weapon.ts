@@ -91,8 +91,12 @@ export class Weapon {
         return this.raw.sk.findIndex((sk) => sk.c === skillCategory) !== -1;
     }
 
-    hasSkillType(skillTypes: number[]): boolean {
-        return this.raw.sk.findIndex((sk) => skillTypes.includes(sk.t)) !== -1;
+    hasSkill(skillCategory: number, availableSkillTypes: number[]): boolean {
+        return (
+            this.raw.sk.findIndex(
+                (sk) => (skillCategory === 0 || skillCategory === sk.c) && availableSkillTypes.includes(sk.t),
+            ) !== -1
+        );
     }
 
     getStarConfig(): string[] {

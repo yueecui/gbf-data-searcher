@@ -3,6 +3,59 @@
         "primaryColor": "#2080F0FF",
         "primaryColorHover": "#4098FCFF",
         "primaryColorPressed": "#1060C9FF",
-        "primaryColorSuppl": "#4098FCFF"
+        "primaryColorSuppl": "#4098FCFF",
+        "popoverColor": "rgba(31, 31, 31, 1)",
+        "textColor2": "rgba(245, 245, 245, 1)",
+        "hoverColor": "#737373FF"
+    },
+    "Button": {
+        "color": "#333333FF",
+        "colorHover": "#333333FF",
+        "colorPressed": "#666666FF",
+        "colorFocus": "#333333FF",
+        "colorDisabled": "#000000FF",
+        "textColor": "#CCCCCCFF",
+        "textColorHover": "#CCCCCCFF",
+        "textColorPressed": "#EFEFEFFF",
+        "textColorFocus": "#CCCCCCFF",
+        "borderPressedInfo": "none",
+        "borderFocusInfo": "none",
+        "borderDisabledInfo": "none",
+        "borderHover": "none",
+        "borderPressed": "none",
+        "borderFocus": "none",
+        "waveOpacity": "0"
+    },
+    "Input": {
+        "color": "rgba(31, 31, 31, 1)",
+        "colorFocus": "rgba(31, 31, 31, 1)",
+        "border": "1px #565656 solid",
+        "groupLabelColor": "rgb(250, 250, 252)",
+        "borderRadius": "1px",
+        "textColor": "rgba(245, 245, 245, 1)",
+        "caretColor": "rgba(245, 245, 245, 1)",
+        "placeholderColor": "rgba(117, 117, 117, 1)",
+        "borderFocus": "none",
+        "boxShadowFocus": "none",
+        "fontSizeMedium": "15px"
+    },
+    "Dropdown": {
+        "optionTextColorHover": "rgba(255, 255, 255, 1)",
+        "optionColorHover": "#737373FF",
+        "optionTextColor": "rgba(204, 204, 204, 1)",
+        "optionTextColorActive": "#CCCCCCFF",
+        "optionTextColorChildActive": "#CCCCCCFF"
+    },
+    "Pagination": {
+        "buttonColor": "#29799bFF",
+        "buttonColorPressed": "#67ADFFFF",
+        "buttonColorHover": "#2080F0FF",
+        "buttonBorderHover": "1px solid #066bb3",
+        "itemTextColor": "rgba(31, 31, 31, 1)",
+        "itemTextColorActive": "#2080F0FF",
+        "itemTextColorPressed": "#1060C9FF",
+        "itemTextColorHover": "#333333FF",
+        "itemColorHover": "#A9A9A947",
+        "itemColorActive": "#0000"
     }
 }

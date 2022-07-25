@@ -31,7 +31,7 @@
                     </n-dropdown>
                 </n-form-item>
                 <n-form-item label="武器技能">
-                    <n-button color="#31bbd7" :ghost="!skillFilterShow" @click="toggleSkillFilter">
+                    <n-button :color="skillFilterShow ? '#afafaf' : '#066bb3'" @click="toggleSkillFilter">
                         <template v-if="skillFilterShow"> 清空</template><template v-else> 展开</template>
                     </n-button>
                 </n-form-item>

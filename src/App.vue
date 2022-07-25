@@ -110,6 +110,11 @@ function resizeFn() {
 const allWeaponData = getWeaponData();
 
 const filteredData = computed(() => {
+    const availableSkillTypes =
+        filterConfig.skillFilter.skill === 0
+            ? generateAvailableSkillTypeList(filterConfig.skillFilter.tag)
+            : [filterConfig.skillFilter.skill];
+
     const filteredData = allWeaponData.filter((weapon) => {
         if (!weapon.findKeyword(filterConfig.name)) {
             return false;
@@ -129,18 +134,18 @@ const filteredData = computed(() => {
         if (!weapon.isCategory(filterConfig.weaponCategory)) {
             return false;
         }
-        if (!weapon.hasSkillCategory(filterConfig.skillFilter.category)) {
-            return false;
-        }
-        if (filterConfig.skillFilter.tag !== '' || filterConfig.skillFilter.skill !== 0) {
-            const availableSkill =
-                filterConfig.skillFilter.skill === 0
-                    ? generateAvailableSkillTypeList(filterConfig.skillFilter.tag)
-                    : [filterConfig.skillFilter.skill];
-            if (!weapon.hasSkillType(availableSkill)) {
+        if (
+            filterConfig.skillFilter.category === 0 &&
+            filterConfig.skillFilter.tag === '' &&
+            filterConfig.skillFilter.skill === 0
+        ) {
+            return true;
+        } else {
+            if (!weapon.hasSkill(filterConfig.skillFilter.category, availableSkillTypes)) {
                 return false;
             }
         }
+
         return true;
     });
 
