@@ -44,10 +44,10 @@ export class Weapon {
 
     findKeyword(keyword: string): boolean {
         if (keyword === '') return true;
-        if (this.raw.n.includes(keyword)) return true;
-        if (this.raw.nj.includes(keyword)) return true;
-        if (this.raw.ne.includes(keyword)) return true;
-        if (this.raw.nn.filter((n) => n.includes(keyword)).length > 0) return true;
+        if (this.raw.n.toLowerCase().includes(keyword)) return true;
+        if (this.raw.nj.toLowerCase().includes(keyword)) return true;
+        if (this.raw.ne.toLowerCase().includes(keyword)) return true;
+        if (this.raw.nn.filter((n) => n.toLowerCase().includes(keyword)).length > 0) return true;
         return false;
     }
 
