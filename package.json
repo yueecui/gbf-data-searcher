@@ -1,7 +1,7 @@
 {
     "name": "gbf-data-searcher",
     "displayName": "GBF Data Searcher V2",
-    "version": "1.0.6",
+    "version": "1.0.8",
     "author": "Yuee",
     "description": "A tool to search GBF data",
     "repository": {

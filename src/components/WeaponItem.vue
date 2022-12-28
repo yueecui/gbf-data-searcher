@@ -1,5 +1,5 @@
 <template>
-    <div class="item px-[3px] pt-[3px] pb-[6px]" :data-master-id="data.id">
+    <div class="gbf-item px-[3px] pt-[3px] pb-[6px]" :data-master-id="data.id">
         <a :href="`/wiki/Weapon/${data.id}`" :title="data.name" target="_blank">
             <img :src="getImageUrl(`M_${data.id}.jpg`)" class="max-w-full" />
             <div
@@ -25,7 +25,7 @@ defineProps<{
 </script>
 
 <style scoped lang="less">
-.item {
+.gbf-item {
     &:hover {
         .item-rarity::before {
             border-image: url('@{ImageUrl}/gbf/uploads/3/37/Character-star-bg3.png') 0 20 fill round;
