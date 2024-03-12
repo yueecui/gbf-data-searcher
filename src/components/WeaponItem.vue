@@ -58,5 +58,8 @@ defineProps<{
     &.red {
         background-position: 0 -711px;
     }
+    &.purple {
+        background-position: 0 -545px;
+    }
 }
 </style>

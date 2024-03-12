@@ -73,6 +73,8 @@ export class Weapon {
                 return this.raw.v[1] === 4;
             case UncapType.FIVE:
                 return this.raw.v[1] == 5;
+            case UncapType.SIX:
+                return this.raw.v[1] == 6;
         }
     }
 
@@ -102,6 +104,9 @@ export class Weapon {
     getStarConfig(): string[] {
         const stars = new Array(this.raw.v[1]).fill('blue');
         stars.fill(this.raw.v[2] === 1 ? 'red' : 'yellow', 0, this.raw.v[0]);
+        if (stars.length === 6) {
+            stars[5] = 'purple';
+        }
         return stars;
     }
 }

@@ -70,6 +70,7 @@ export enum UncapType {
     FOUR_PLUS = 2,
     FOUR = 3,
     FIVE = 4,
+    SIX = 5,
 }
 
 export const UncapTypeNameMap: Record<UncapType, string> = {
@@ -78,6 +79,7 @@ export const UncapTypeNameMap: Record<UncapType, string> = {
     [UncapType.FOUR_PLUS]: '★★★★～',
     [UncapType.FOUR]: '★★★★',
     [UncapType.FIVE]: '★★★★★',
+    [UncapType.SIX]: '★★★★★★',
 };
 
 export enum SortType {
