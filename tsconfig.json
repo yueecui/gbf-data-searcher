@@ -17,11 +17,9 @@
         "noUnusedParameters": true,
         "experimentalDecorators": true,
         "lib": ["dom", "esnext"],
-        "types": ["vite/client"],
-        "typeRoots": ["./node_modules/@types/"],
+        "types": ["node", "vite/client", "naive-ui/volar"],
         "noImplicitAny": false,
         "skipLibCheck": true,
-        "importsNotUsedAsValues": "error",
         "paths": {
             "@/*": ["src/*"]
         }

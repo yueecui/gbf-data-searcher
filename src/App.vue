@@ -14,14 +14,15 @@
 
 <script setup lang="ts">
 import { dateZhCN, NConfigProvider, NPagination, zhCN } from 'naive-ui';
-import { computed, onMounted, provide, reactive, ref, watch } from 'vue';
-import ThemeOverrides from './assets/naive-ui-theme-overrides.json';
 import SearcherFilter from './components/SearcherFilter.vue';
 import SearchResult from './components/SearchResult.vue';
+
+import { computed, onMounted, provide, reactive, ref, watch } from 'vue';
+import ThemeOverrides from './assets/naive-ui-theme-overrides.json';
 import { screenMap, sizeEnum } from './enums/breakpointEnum';
 import { SortType } from './enums/constant';
 import { generateAvailableSkillTypeList, getWeaponData } from './module/getData';
-import type { FilterConfig } from './types/filter';
+import type { FilterConfig } from './types/filter.js';
 
 // ====================================================================================
 // FILTER
@@ -110,10 +111,7 @@ function resizeFn() {
 const allWeaponData = getWeaponData();
 
 const filteredData = computed(() => {
-    const availableSkillTypes =
-        filterConfig.skillFilter.skill === 0
-            ? generateAvailableSkillTypeList(filterConfig.skillFilter.tag)
-            : [filterConfig.skillFilter.skill];
+    const availableSkillTypes = generateAvailableSkillTypeList(filterConfig.skillFilter);
 
     const filteredData = allWeaponData.filter((weapon) => {
         if (!weapon.findKeyword(filterConfig.name)) {

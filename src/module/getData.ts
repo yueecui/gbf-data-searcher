@@ -1,4 +1,5 @@
 import { Weapon } from '../objects/Weapon';
+import type { FilterConfig } from '../types/filter.js';
 import type {
     SkillCatrgoryMap,
     SkillSortConfig,
@@ -37,6 +38,7 @@ interface GbfData {
     weapon: WeaponRaw[];
     weaponFilterConfig: WeaponFilterConfig;
     weaponTagIdMap: WeaponTagIdMap;
+    uniqueSkillList: string[];
 }
 
 /**
@@ -138,27 +140,53 @@ export function generateSkillTagFilter() {
 
 /** 生成技能类型标签过滤器 */
 export function generateSkillTypeFilter(tag: string) {
-    const { skillSortConfig, skillTypeIdMap } = getGbfData();
-    return skillSortConfig
-        .filter((tagName) => {
-            if (skillTypeIdMap[tagName]) {
-                return tag === '' ? true : skillTypeIdMap[tagName].t.includes(tag);
-            } else {
-                console.error(`标签[${tagName}]不存在，请从数据中移除`);
+    const { skillSortConfig, skillTypeIdMap, uniqueSkillList } = getGbfData();
+
+    let hasUniqueSkill = false;
+    const skillTypes = skillSortConfig.reduce((acc, tagName) => {
+        if (skillTypeIdMap[tagName]) {
+            if (tag === '' || skillTypeIdMap[tagName].t.includes(tag)) {
+                if (uniqueSkillList.includes(tagName)) {
+                    hasUniqueSkill = true;
+                } else {
+                    acc.push(tagName);
+                }
             }
-        })
-        .map((tagName) => {
-            return {
-                label: tagName,
-                key: skillTypeIdMap[tagName].i,
-            };
+        } else {
+            console.error(`标签[${tagName}]不存在，请从数据中移除`);
+        }
+        return acc;
+    }, [] as string[]);
+
+    const result = skillTypes.map((typeName) => {
+        return {
+            label: typeName,
+            key: skillTypeIdMap[typeName].i,
+        };
+    });
+
+    if (hasUniqueSkill) {
+        result.push({
+            label: '独有技能',
+            key: -1,
         });
+    }
+
+    return result;
 }
 
 /** 生成属性标签过滤器 */
-export function generateAvailableSkillTypeList(tag: string) {
-    const { skillSortConfig, skillTypeIdMap } = getGbfData();
-    return skillSortConfig
-        .filter((tagName) => (tag === '' ? true : skillTypeIdMap[tagName].t.includes(tag)))
-        .map((tagName) => skillTypeIdMap[tagName].i);
+export function generateAvailableSkillTypeList(skillFilter: FilterConfig['skillFilter']) {
+    const { tag, skill } = skillFilter;
+    if (skillFilter.skill > 0) return [skillFilter.skill];
+
+    const { skillSortConfig, skillTypeIdMap, uniqueSkillList } = getGbfData();
+
+    let skillList = skillSortConfig.filter((tagName) => (tag === '' ? true : skillTypeIdMap[tagName].t.includes(tag)));
+    // skill为0是全部，为-1是独有技能
+    if (skill === -1) {
+        skillList = skillList.filter((tagName) => uniqueSkillList.includes(tagName));
+    }
+
+    return skillList.map((tagName) => skillTypeIdMap[tagName].i);
 }
