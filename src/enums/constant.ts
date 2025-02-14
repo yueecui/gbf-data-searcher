@@ -18,6 +18,16 @@ export const ElementTypeNameMap: Record<ElementType, string> = {
     [ElementType.DARK]: '暗',
 };
 
+export const ElementTypeIconMap: Record<ElementType, string> = {
+    [ElementType.ALL]: '',
+    [ElementType.FIRE]: 'Icon_ele_fire',
+    [ElementType.WATER]: 'Icon_ele_water',
+    [ElementType.EARTH]: 'Icon_ele_earth',
+    [ElementType.WIND]: 'Icon_ele_wind',
+    [ElementType.LIGHT]: 'Icon_ele_light',
+    [ElementType.DARK]: 'Icon_ele_dark',
+};
+
 export enum RarityType {
     ALL = 0,
     N = 1,
@@ -64,6 +74,21 @@ export const WeaponTypeNameMap: Record<WeaponType, string> = {
     [WeaponType.MATERIAL]: '素材',
 };
 
+export const WeaponTypeIconMap: Record<WeaponType, string> = {
+    [WeaponType.ALL]: '',
+    [WeaponType.SABRE]: 'icon_type_7_1',
+    [WeaponType.DAGGER]: 'icon_type_7_2',
+    [WeaponType.SPEAR]: 'icon_type_7_3',
+    [WeaponType.AXE]: 'icon_type_7_4',
+    [WeaponType.STAFF]: 'icon_type_7_5',
+    [WeaponType.GUN]: 'icon_type_7_6',
+    [WeaponType.MELEE]: 'icon_type_7_7',
+    [WeaponType.BOW]: 'icon_type_7_8',
+    [WeaponType.HARP]: 'icon_type_7_9',
+    [WeaponType.KATANA]: 'icon_type_7_10',
+    [WeaponType.MATERIAL]: '',
+};
+
 export enum UncapType {
     ALL = 0,
     THREE = 1,
@@ -94,4 +119,48 @@ export const SortTypeNameMap: Record<SortType, string> = {
     [SortType.UPDATE_DATA_DESC]: '最近更新',
     [SortType.ELEMENT]: '属性',
     [SortType.TYPE]: '类型',
+};
+
+
+export enum DisplayType {
+    UNCAP = 0,
+    CH_NAME = 1,
+    JP_NAME = 2,
+    EN_NAME = 3,
+    RELEASE_DATE = 4,
+    UPDATE_DATE = 5,
+    TYPE = 6,
+    ID = 7,
+    NONE = 99,
+}
+
+export const DisplayTypeNameMap: Record<DisplayType, string> = {
+    [DisplayType.UNCAP]: '突破',
+    [DisplayType.CH_NAME]: '中文名称',
+    [DisplayType.JP_NAME]: '日文名称',
+    [DisplayType.EN_NAME]: '英文名称',
+    [DisplayType.RELEASE_DATE]: '实装日期',
+    [DisplayType.UPDATE_DATE]: '更新日期',
+    [DisplayType.TYPE]: '武器类型',
+    [DisplayType.ID]: 'ID',
+    [DisplayType.NONE]: '不显示',
+};
+
+
+export enum SpeciaFilterType {
+    ALL = 0,
+    HAS_AWAKEN = 1,
+    HAS_EXSKILL = 2,
+    // HAS_AWAKEN_EXSKILL = 3,
+    HAS_REDSTAR = 4,
+    HAS_CHARACTER = 5,
+}
+
+export const SpeciaFilterTypeNameMap: Record<SpeciaFilterType, string> = {
+    [SpeciaFilterType.ALL]: '全部',
+    [SpeciaFilterType.HAS_AWAKEN]: '有觉醒',
+    [SpeciaFilterType.HAS_EXSKILL]: '有EX技能',
+    // [SpeciaFilterType.HAS_AWAKEN_EXSKILL]: '有觉醒/EX技能',
+    [SpeciaFilterType.HAS_REDSTAR]: '经特殊强化',
+    [SpeciaFilterType.HAS_CHARACTER]: '可解锁角色',
 };

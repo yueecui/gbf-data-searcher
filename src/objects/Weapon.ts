@@ -4,6 +4,7 @@ import type { WeaponRaw } from '../types/gbfdata';
 /**
  * 将武器生成实例，方便处理原有数据缩写的不便
  */
+
 export class Weapon {
     raw: WeaponRaw;
     constructor(weapon: WeaponRaw) {
@@ -26,12 +27,24 @@ export class Weapon {
         }
     }
 
+    get chname(): string {
+        return this.raw.n;
+    }
+
+    get jpname(): string {
+        return this.raw.nj;
+    }
+
+    get enname(): string {
+        return this.raw.ne;
+    }
+
     get releaseTimestamp(): number {
         return this.raw.d;
     }
 
     get updateTimestamp(): number {
-        return this.raw.l;
+        return this.raw.l || this.raw.d;
     }
 
     get element(): ElementType {
@@ -40,6 +53,16 @@ export class Weapon {
 
     get weaponType(): WeaponType {
         return this.raw.k;
+    }
+
+    get awaken(): number {
+        if (!this.raw.aw || this.raw.aw.length === 0) return 0;
+        return this.raw.aw[0];
+    }
+
+    get exSkill(): number {
+        if (!this.raw.ex || this.raw.ex.length === 0) return 0;
+        return this.raw.ex[0];
     }
 
     findKeyword(keyword: string): boolean {
@@ -99,6 +122,26 @@ export class Weapon {
                 (sk) => (skillCategory === 0 || skillCategory === sk.c) && availableSkillTypes.includes(sk.t),
             ) !== -1
         );
+    }
+
+    hasUnlockChar(): boolean {
+        return this.raw.uc != null && this.raw.uc != 0;
+    }
+
+    hasAwaken(): boolean {
+        return (this.raw.aw && this.raw.aw.length > 0);
+    }
+
+    hasExSkill(): boolean {
+        return (this.raw.ex && this.raw.ex.length > 0);
+    }
+
+    hasAwakenOrExSkill(): boolean {
+        return this.hasAwaken() || this.hasExSkill();
+    }
+
+    hasRedStar(): boolean {
+        return this.raw.v[2] === 1;
     }
 
     getStarConfig(): string[] {

@@ -1,3 +1,4 @@
+import { VNode, h } from 'vue';
 import { Weapon } from '../objects/Weapon';
 import type { FilterConfig } from '../types/filter.js';
 import type {
@@ -8,8 +9,10 @@ import type {
     WeaponFilterConfig,
     WeaponRaw,
     WeaponTagIdMap,
+    AwakenConfig,
 } from '../types/gbfdata';
 import { convertLuaTable } from './convertLuaTable';
+import { getImageUrl } from '../module/getImageUrl';
 
 let dataCache: any;
 
@@ -39,6 +42,8 @@ interface GbfData {
     weaponFilterConfig: WeaponFilterConfig;
     weaponTagIdMap: WeaponTagIdMap;
     uniqueSkillList: string[];
+    awakenConfig: AwakenConfig;
+    exSkillConfig: AwakenConfig;
 }
 
 /**
@@ -82,13 +87,64 @@ export function getWeaponTypeName(weaponTypeId: number) {
         }
     }
 }
+export function getWeaponTypeIcon(weaponTypeId: number) {
+    if (weaponTypeId === 0) {
+        return null;
+    }
+
+    const data = getGbfData();
+    for (const [_, v] of Object.entries(data.weaponTagIdMap)) {
+        if (v.i === weaponTypeId) {
+            if (v.o)
+                return v.o;
+            else
+                return null
+        }
+    }
+}
+
+/**
+ * 查询武器觉醒图标
+ */
+export function getWeaponAwakenIcon(awakenId: number) {
+    if (awakenId === 0) {
+        return null;
+    }
+    const data = getGbfData();
+    return data.awakenConfig.icon[awakenId - 1];
+}
+
+/**
+ * 查询武器EX技能图标
+ */
+export function getWeaponExSkillIcon(awakenId: number) {
+    if (awakenId === 0) {
+        return null;
+    }
+    const data = getGbfData();
+    return data.exSkillConfig.icon[awakenId - 1];
+}
 
 interface WeaponOptionItem {
     label: string;
     key: number | string;
     children?: WeaponOptionItem[];
     disabled?: boolean;
+    icon?: () => VNode | null;
 }
+
+export function generateIcon(icon: string) {
+    if (icon === '') {
+        return null;
+    }
+    return h(
+        'img',
+        {
+            src: getImageUrl(`${icon}.png`),
+            class: 'filter-icon',
+        }
+    );
+};
 
 /** 递归生成武器分类过滤器选项 */
 function generateWeaponFilter(filter: WeaponFilterConfig) {
@@ -100,6 +156,7 @@ function generateWeaponFilter(filter: WeaponFilterConfig) {
                 result.push({
                     label: name,
                     key: item,
+                    icon: () => generateIcon(getWeaponTypeIcon(item) || ''),
                 });
             }
         } else {
