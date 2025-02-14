@@ -1,13 +1,9 @@
 <template>
-    <n-config-provider
-        :theme-overrides="ThemeOverrides"
-        :inline-theme-disabled="true"
-        :abstract="true"
-        :locale="zhCN"
-        :date-locale="dateZhCN"
-    >
+    <n-config-provider :theme-overrides="ThemeOverrides" :inline-theme-disabled="true" :abstract="true" :locale="zhCN"
+        :date-locale="dateZhCN">
         <searcher-filter :reset-filter="resetFilter" />
-        <search-result :showData="showData" :page="page" :total="total" :totalPage="totalPage" />
+        <search-result :showData="showData" :page="page" :total="total" :totalPage="totalPage"
+            :display="filterConfig.display" />
         <n-pagination v-model:page="page" :page-count="totalPage" class="justify-center" />
     </n-config-provider>
 </template>
@@ -20,7 +16,7 @@ import SearchResult from './components/SearchResult.vue';
 import { computed, onMounted, provide, reactive, ref, watch } from 'vue';
 import ThemeOverrides from './assets/naive-ui-theme-overrides.json';
 import { screenMap, sizeEnum } from './enums/breakpointEnum';
-import { SortType } from './enums/constant';
+import { SortType, SpeciaFilterType } from './enums/constant';
 import { generateAvailableSkillTypeList, getWeaponData } from './module/getData';
 import type { FilterConfig } from './types/filter.js';
 
@@ -34,12 +30,14 @@ const filterConfigDefault: FilterConfig = {
     uncap: 0,
     weaponType: 0,
     weaponCategory: 0,
+    specialFilter: 0,
     skillFilter: {
         category: 0,
         tag: '',
         skill: 0,
     },
     sort: 0,
+    display: 0,
 };
 
 const filterConfig = reactive<FilterConfig>(JSON.parse(JSON.stringify(filterConfigDefault)));
@@ -131,6 +129,22 @@ const filteredData = computed(() => {
         }
         if (!weapon.isCategory(filterConfig.weaponCategory)) {
             return false;
+        }
+        switch (filterConfig.specialFilter) {
+            case SpeciaFilterType.ALL:
+                break;
+            case SpeciaFilterType.HAS_AWAKEN:
+                return weapon.hasAwaken();
+            case SpeciaFilterType.HAS_EXSKILL:
+                return weapon.hasExSkill();
+            // case SpeciaFilterType.HAS_AWAKEN_EXSKILL:
+            //     return weapon.hasAwakenOrExSkill();
+            case SpeciaFilterType.HAS_CHARACTER:
+                return weapon.hasUnlockChar();
+            case SpeciaFilterType.HAS_REDSTAR:
+                return weapon.hasRedStar();
+            default:
+                break;
         }
         if (
             filterConfig.skillFilter.category === 0 &&

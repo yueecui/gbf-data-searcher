@@ -47,6 +47,12 @@ export interface WeaponRaw {
     c: number[];
     /** 突破上限/终突上限/是否为红色星星 */
     v: [number, number, 1 | 0];
+    /** 觉醒 */
+    aw: number[];
+    /** 解锁角色 */
+    uc: number;
+    /** EX技能 */
+    ex: number[];
     /** 最后更新的时间戳 */
     l: number;
     /** 技能 */
@@ -63,9 +69,9 @@ export interface WeaponRaw {
 /** 武器过滤器配置 */
 export type WeaponFilterConfig = (
     | {
-          name: string;
-          children: WeaponFilterConfig;
-      }
+        name: string;
+        children: WeaponFilterConfig;
+    }
     | number
 )[];
 
@@ -76,4 +82,10 @@ export type WeaponTagIdMap = Record<
         i: number;
         o?: string;
     }
+>;
+
+/** 武器觉醒配置 */
+export type AwakenConfig = Record<
+    string,
+    string[]
 >;
