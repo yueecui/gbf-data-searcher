@@ -2,7 +2,7 @@
     <div class="search-result-list m-8">
         <div class="text-with-shadow absolute top-[12px] left-[18px] leading-none">符合条件的武器数: {{ total }}个</div>
         <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10">
-            <weapon-item v-for="data in showData" :key="data.id" :data="data" />
+            <weapon-item v-for="data in showData" :key="data.id" :data="data" :display="display" />
         </div>
         <div class="absolute bottom-[12px] left-0 w-full">
             <div class="total-paging text-with-shadow italic text-center leading-none">{{ page }}/{{ totalPage }}</div>
@@ -12,6 +12,7 @@
 
 <script setup lang="ts">
 import type { Weapon } from '../objects/Weapon';
+import type { DisplayType } from '../enums/constant';
 import WeaponItem from './WeaponItem.vue';
 
 defineProps<{
@@ -19,6 +20,7 @@ defineProps<{
     page: number;
     total: number;
     totalPage: number;
+    display: DisplayType;
 }>();
 </script>
 
@@ -35,6 +37,7 @@ defineProps<{
         content: '';
     }
 }
+
 @media (max-width: 767px) {
     .search-result-list {
         margin-left: -10px;
@@ -55,6 +58,7 @@ defineProps<{
         content: '';
         transform: scale(0.9);
     }
+
     &::after {
         background: url('@{ImageUrl}/gbf/uploads/f/f7/Pager-control.png') no-repeat 0 -2798px;
         width: 52px;
