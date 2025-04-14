@@ -59,12 +59,9 @@ const displayType = DisplayType;
 }
 
 .item-rarity {
-    // display: flex;
-    // align-items: center;
-    // justify-content: center;
-    // height: 26px;
-    // padding-top: 2px;
-    // margin-top: -6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
     color: #f2eee2;
     font-size: 13px;
@@ -77,6 +74,13 @@ const displayType = DisplayType;
         border-width: 0 10px;
         border-style: solid;
         content: '';
+    }
+
+    >div {
+        margin-top: 6px;
+        max-width: 100%;
+        min-height: 100%;
+        text-align: left;
     }
 }
 
