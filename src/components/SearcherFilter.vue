@@ -30,7 +30,7 @@
                 </n-form-item>
                 <n-form-item label="上限解放">
                     <n-dropdown trigger="click" :options="uncapOptions" @select="changeUncapType">
-                        <n-button class="w-48">{{ UncapTypeNameMap[filterConfig.uncap] }}</n-button>
+                        <n-button class="w-32">{{ UncapTypeNameMap[filterConfig.uncap] }}</n-button>
                     </n-dropdown>
                 </n-form-item>
                 <n-form-item label="武器分类">
@@ -44,7 +44,7 @@
                 </n-form-item>
                 <n-form-item label="其他条件">
                     <n-dropdown trigger="click" :options="specialFilterOptions" @select="changeSpecialFilter">
-                        <n-button class="w-48">{{ SpeciaFilterTypeNameMap[filterConfig.specialFilter] }}</n-button>
+                        <n-button class="w-32">{{ SpeciaFilterTypeNameMap[filterConfig.specialFilter] }}</n-button>
                     </n-dropdown>
                 </n-form-item>
                 <n-form-item label="武器技能">

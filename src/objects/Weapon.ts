@@ -67,6 +67,7 @@ export class Weapon {
 
     findKeyword(keyword: string): boolean {
         if (keyword === '') return true;
+        keyword = keyword.toLowerCase();
         if (this.raw.n.toLowerCase().includes(keyword)) return true;
         if (this.raw.nj.toLowerCase().includes(keyword)) return true;
         if (this.raw.ne.toLowerCase().includes(keyword)) return true;
